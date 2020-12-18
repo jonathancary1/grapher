@@ -1,35 +1,18 @@
 import Vue from 'vue';
 import Vuelidate from 'vuelidate';
+import VueApollo from 'vue-apollo';
 import VueRouter from 'vue-router';
-import App from './App.vue';
-import Account from './views/Account.vue';
-import Home from './views/Home.vue';
 import 'normalize.css';
+import router from './router.js';
+import apolloProvider from './apollo.js';
+import App from './App.vue';
 
 Vue.use(Vuelidate);
+Vue.use(VueApollo);
 Vue.use(VueRouter);
-
-const home = {
-  path: '/',
-  name: 'Home',
-  component: Home
-};
-
-const account = {
-  path: '/account',
-  name: 'Account',
-  component: Account
-};
-
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes: [home, account]
-});
 
 Vue.config.productionTip = false
 
-new Vue({
-  router,
-  render: h => h(App)
-}).$mount('#app')
+new Vue(
+  { router, apolloProvider, render: h => h(App) }
+).$mount('#app');
