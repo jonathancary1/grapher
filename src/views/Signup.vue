@@ -10,21 +10,21 @@
       Email
     </label>
     <input
+      v-model="$v.email.$model"
       class="signup-input-layout"
       name="email"
       type="email"
-      v-model="$v.email.$model"
     >
     <template v-if="$v.email.$error">
       <div
+        v-if="!$v.email.required"
         class="validation-error signup-error-layout"
-        v-if='!$v.email.required'
       >
         This field is required.
       </div>
       <div
+        v-if="!$v.email.email"
         class="validation-error signup-error-layout"
-        v-if='!$v.email.email'
       >
         Please enter a valid email.
       </div>
@@ -36,21 +36,21 @@
       Username
     </label>
     <input
+      v-model="$v.username.$model"
       class="signup-input-layout"
       name="username"
       type="text"
-      v-model="$v.username.$model"
     >
     <template v-if="$v.username.$error">
       <div
+        v-if="!$v.username.required"
         class="validation-error signup-error-layout"
-        v-if='!$v.username.required'
       >
         This field is required.
       </div>
       <div
+        v-if="!$v.username.alphaNum"
         class="validation-error signup-error-layout"
-        v-if='!$v.username.alphaNum'
       >
         Please enter a valid username.
       </div>
@@ -62,21 +62,21 @@
       Password
     </label>
     <input
+      v-model="$v.password.$model"
       class="signup-input-layout"
       name="password"
       type="password"
-      v-model="$v.password.$model"
     >
     <template v-if="$v.password.$error">
       <div
+        v-if="!$v.password.required"
         class="validation-error signup-error-layout"
-        v-if='!$v.password.required'
       >
         This field is required.
       </div>
       <div
+        v-if="!$v.password.minLength"
         class="validation-error signup-error-layout"
-        v-if='!$v.password.minLength'
       >
         At least 8 characters are required.
       </div>
@@ -87,8 +87,8 @@
       value="Sign Up"
     >
     <div
-      class="submition-error signup-error-layout"
       v-if="error !== null"
+      class="submition-error signup-error-layout"
     >
       {{ error.message }}
     </div>
@@ -97,61 +97,54 @@
 
 <script>
 import {
-  alphaNum,
-  email,
-  minLength,
-  required
+  alphaNum, email, minLength, required,
 } from 'vuelidate/lib/validators';
-
-import {
-  CognitoUserAttribute,
-  CognitoUserPool
-} from 'amazon-cognito-identity-js';
+import { signUp } from '../aws/cognito';
 
 export default {
   name: 'Signup',
   data() {
-    return { email: '', username: '', password: '', error: null };
+    return {
+      email: '',
+      username: '',
+      password: '',
+      error: null,
+    };
   },
   methods: {
-    submit() {
+    async submit() {
       this.$data.error = null;
       this.$v.$touch();
       if (this.$v.$invalid) {
         return;
       }
-      const userPool = new CognitoUserPool({
-        UserPoolId: 'ap-northeast-1_cCS5gSeUQ',
-        ClientId: '6uepkp04av1if5mrjhndsh59aa'
-      });
-      const attributes = [
-        new CognitoUserAttribute({ Name: 'email', Value: this.$data.email })
-      ];
-      userPool.signUp(this.$data.username, this.$data.password, attributes, null, (error, result) => {
+      try {
+        // eslint-disable-next-line no-shadow
+        const { email, username, password } = this.$data;
+        const result = await signUp(username, email, password);
+        this.$emit('submit', result);
+      } catch (error) {
+        this.$data.error = error;
+      } finally {
         this.$data.password = '';
         this.$v.password.$reset();
-        if (error) {
-          this.$data.error = error;
-        } else {
-          this.$emit('submit', result);
-        }
-      });
-    }
+      }
+    },
   },
   validations: {
     email: {
       required,
-      email
+      email,
     },
     username: {
       required,
-      alphaNum
+      alphaNum,
     },
     password: {
       required,
-      minLength: minLength(8)
-    }
-  }
+      minLength: minLength(8),
+    },
+  },
 };
 </script>
 

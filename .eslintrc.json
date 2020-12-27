@@ -1,0 +1,12 @@
+{
+  "env": {
+    "node": true
+  },
+  "extends": [
+    "plugin:vue/essential",
+    "airbnb-base"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2020
+  }
+}

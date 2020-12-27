@@ -12,8 +12,8 @@
       @submit="signup"
     />
     <div
-      class="home-verification-layout"
       v-if="verification"
+      class="home-verification-layout"
     >
       A verification email has been sent.
     </div>
@@ -25,22 +25,25 @@
       type="button"
       :value="value"
       @click="button"
-    />
+    >
   </div>
 </template>
 
 <script>
-import Login from './Login';
-import Signup from './Signup';
+import Login from './Login.vue';
+import Signup from './Signup.vue';
 
 export default {
   name: 'Home',
   components: {
     Login,
-    Signup
+    Signup,
   },
   data() {
-    return { state: 'LOGIN', verification: false };
+    return {
+      state: 'LOGIN',
+      verification: false,
+    };
   },
   computed: {
     value() {
@@ -52,11 +55,12 @@ export default {
         default:
           return '';
       }
-    }
+    },
   },
   methods: {
     login(result) {
-      this.$emit('login', result);
+      const token = result.idToken;
+      this.$router.push({ name: 'Account', params: { token } });
     },
     signup() {
       this.$data.state = 'LOGIN';
@@ -72,13 +76,15 @@ export default {
           this.$data.state = 'LOGIN';
           this.$data.verification = false;
           break;
+        default:
+          break;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
-<style scoped>
+<style>
 .home-header-layout {
   margin: 128px 0 64px 0;
 }

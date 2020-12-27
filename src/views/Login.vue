@@ -10,21 +10,21 @@
       Username
     </label>
     <input
+      v-model="$v.username.$model"
       class="login-input-layout"
       name="username"
       type="text"
-      v-model="$v.username.$model"
     >
     <template v-if="$v.username.$error">
       <div
+        v-if="!$v.username.required"
         class="validation-error login-error-layout"
-        v-if='!$v.username.required'
       >
         This field is required.
       </div>
       <div
+        v-if="!$v.username.alphaNum"
         class="validation-error login-error-layout"
-        v-if='!$v.username.alphaNum'
       >
         Please enter a valid username.
       </div>
@@ -36,21 +36,21 @@
       Password
     </label>
     <input
+      v-model="$v.password.$model"
       class="login-input-layout"
       name="password"
       type="password"
-      v-model="$v.password.$model"
     >
     <template v-if="$v.password.$error">
       <div
+        v-if="!$v.password.required"
         class="validation-error login-error-layout"
-        v-if='!$v.password.required'
       >
         This field is required.
       </div>
       <div
+        v-if="!$v.password.minLength"
         class="validation-error login-error-layout"
-        v-if='!$v.password.minLength'
       >
         At least 8 characters are required.
       </div>
@@ -61,8 +61,8 @@
       value="Log In"
     >
     <div
-      class="submition-error login-error-layout"
       v-if="error !== null"
+      class="submition-error login-error-layout"
     >
       {{ error.message }}
     </div>
@@ -70,66 +70,47 @@
 </template>
 
 <script>
-import {
-  alphaNum,
-  minLength,
-  required
-} from 'vuelidate/lib/validators';
-
-import {
-  AuthenticationDetails,
-  CognitoUser,
-  CognitoUserPool
-} from 'amazon-cognito-identity-js';
+import { alphaNum, minLength, required } from 'vuelidate/lib/validators';
+import { logIn } from '../aws/cognito';
 
 export default {
   name: 'Login',
   data() {
-    return { username: '', password: '', error: null };
+    return {
+      username: '',
+      password: '',
+      error: null,
+    };
   },
   methods: {
-    submit() {
+    async submit() {
       this.$data.error = null;
       this.$v.$touch();
       if (this.$v.$invalid) {
-        return
+        return;
       }
-      const authenticationDetails = new AuthenticationDetails({
-        Username: this.$data.username,
-        Password: this.$data.password
-      });
-      const userPool = new CognitoUserPool({
-        UserPoolId: 'ap-northeast-1_cCS5gSeUQ',
-        ClientId: '6uepkp04av1if5mrjhndsh59aa'
-      });
-      const cognitoUser = new CognitoUser({
-        Username: this.$data.username,
-        Pool: userPool
-      });
-      cognitoUser.authenticateUser(authenticationDetails, {
-        onSuccess: (result) => {
-          this.$data.password = '';
-          this.$v.password.$reset();
-          this.$emit('submit', result.getAccessToken().getJwtToken());
-        },
-        onFailure: (error) => {
-          this.$data.password = '';
-          this.$v.password.$reset();
-          this.$data.error = error;
-        }
-      });
-    }
+      try {
+        const { username, password } = this.$data;
+        const result = await logIn(username, password);
+        this.$emit('submit', result);
+      } catch (error) {
+        this.$data.error = error;
+      } finally {
+        this.$data.password = '';
+        this.$v.password.$reset();
+      }
+    },
   },
   validations: {
     username: {
       required,
-      alphaNum
+      alphaNum,
     },
     password: {
       required,
-      minLength: minLength(8)
-    }
-  }
+      minLength: minLength(8),
+    },
+  },
 };
 </script>
 

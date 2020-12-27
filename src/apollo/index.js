@@ -3,6 +3,6 @@ import ApolloClient from 'apollo-boost';
 
 export default new VueApollo({
   defaultClient: new ApolloClient({
-    uri: 'http://localhost/api/graphql'
-  })
+    uri: 'http://localhost/api/graphql',
+  }),
 });
