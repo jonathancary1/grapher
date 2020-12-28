@@ -6,7 +6,7 @@
       :disabled="disabled.left"
       @click="$emit('left')"
     >
-      <LeftArrow class="arrow" />
+      <LeftArrow class="navigation-arrow" />
     </button>
     <button
       id="navigation-button-right"
@@ -14,7 +14,7 @@
       :disabled="disabled.right"
       @click="$emit('right')"
     >
-      <RightArrow class="arrow" />
+      <RightArrow class="navigation-arrow" />
     </button>
     <Search
       class="navigation-search-layout"
@@ -49,7 +49,9 @@ export default {
 </script>
 
 <style>
-.arrow {
+.navigation-arrow {
+  width: 12px;
+  height: 16px;
   stroke: #fff;
 }
 

@@ -182,6 +182,11 @@ export default {
   box-shadow: inset 0 0 16px #ddd;
 }
 
+.account-loading-layout svg {
+  width: 32px;
+  height: 32px;
+}
+
 @-webkit-keyframes rotating {
   from {
     -webkit-transform: rotate(0deg);
