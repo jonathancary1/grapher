@@ -99,7 +99,6 @@
 import {
   alphaNum, email, minLength, required,
 } from 'vuelidate/lib/validators';
-import { signUp } from '../aws/cognito';
 
 export default {
   name: 'Signup',
@@ -121,8 +120,8 @@ export default {
       try {
         // eslint-disable-next-line no-shadow
         const { email, username, password } = this.$data;
-        const result = await signUp(username, email, password);
-        this.$emit('submit', result);
+        await this.$store.dispatch('signUp', { email, username, password });
+        this.$emit('submit');
       } catch (error) {
         this.$data.error = error;
       } finally {

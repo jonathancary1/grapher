@@ -58,9 +58,8 @@ export default {
     },
   },
   methods: {
-    login(result) {
-      const token = result.idToken;
-      this.$router.push({ name: 'Account', params: { token } });
+    login() {
+      this.$router.push({ name: 'Account' });
     },
     signup() {
       this.$data.state = 'LOGIN';

@@ -19,7 +19,8 @@
     "vue-d3-network": "^0.1.28",
     "vue-router": "^3.2.0",
     "vue-svg-loader": "^0.16.0",
-    "vuelidate": "^0.7.6"
+    "vuelidate": "^0.7.6",
+    "vuex": "^3.6.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -29,10 +30,12 @@
     "@vue/test-utils": "^1.1.2",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
+    "clone": "^2.1.2",
     "eslint": "^6.7.2",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-vue": "^6.2.2",
+    "flush-promises": "^1.0.2",
     "jest": "^26.6.3",
     "vue-jest": "^3.0.7",
     "vue-template-compiler": "^2.6.12"
@@ -48,6 +51,9 @@
     ],
     "parserOptions": {
       "parser": "babel-eslint"
+    },
+    "rules": {
+      "no-param-reassign": ["error", { "props": false }]
     }
   },
   "eslintIgnore": [

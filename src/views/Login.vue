@@ -71,7 +71,6 @@
 
 <script>
 import { alphaNum, minLength, required } from 'vuelidate/lib/validators';
-import { logIn } from '../aws/cognito';
 
 export default {
   name: 'Login',
@@ -91,8 +90,8 @@ export default {
       }
       try {
         const { username, password } = this.$data;
-        const result = await logIn(username, password);
-        this.$emit('submit', result);
+        await this.$store.dispatch('logIn', { username, password });
+        this.$emit('submit');
       } catch (error) {
         this.$data.error = error;
       } finally {

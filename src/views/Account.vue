@@ -46,9 +46,6 @@ export default {
     Navigation,
     LoadingIcon,
   },
-  props: {
-    token: Object,
-  },
   data() {
     return {
       url: '',
@@ -59,7 +56,7 @@ export default {
     };
   },
   created() {
-    if (this.$props.token == null) {
+    if (this.$store.state.token == null) {
       this.$router.replace({ name: 'Home' });
     }
   },
@@ -95,7 +92,7 @@ export default {
     crawl: {
       query: graphql.queries.crawl,
       context() {
-        return { headers: { authorization: this.$props.token?.jwtToken } };
+        return { headers: { authorization: this.$store.state.token } };
       },
       variables() {
         return { id: this.$data.crawls[this.$data.index] };
@@ -110,7 +107,7 @@ export default {
     crawls: {
       query: graphql.queries.crawls,
       context() {
-        return { headers: { authorization: this.$props.token?.jwtToken } };
+        return { headers: { authorization: this.$store.state.token } };
       },
       update(data) {
         return data.user?.crawls?.map((crawl) => crawl.id) || [];
@@ -135,7 +132,7 @@ export default {
       this.$data.loading = true;
       const mutation = await this.$apollo.mutate({
         mutation: graphql.mutations.crawl,
-        context: { headers: { authorization: this.$props.token?.jwtToken } },
+        context: { headers: { authorization: this.$store.state.token } },
         variables: { url: normalize(this.$data.url) },
       });
       if (mutation.data.crawl === null) {

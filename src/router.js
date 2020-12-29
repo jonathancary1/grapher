@@ -9,7 +9,6 @@ const home = {
 };
 
 const account = {
-  props: true,
   path: '/account',
   name: 'Account',
   component: Account,
