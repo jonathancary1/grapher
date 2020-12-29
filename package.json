@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "test": "jest"
   },
   "dependencies": {
     "amazon-cognito-identity-js": "^4.5.5",
@@ -25,11 +26,15 @@
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "^4.5.9",
     "@vue/cli-service": "~4.5.0",
+    "@vue/test-utils": "^1.1.2",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-vue": "^6.2.2",
+    "jest": "^26.6.3",
+    "vue-jest": "^3.0.7",
     "vue-template-compiler": "^2.6.12"
   },
   "eslintConfig": {
@@ -39,12 +44,26 @@
     },
     "extends": [
       "plugin:vue/essential",
-      "eslint:recommended"
+      "airbnb-base"
     ],
     "parserOptions": {
       "parser": "babel-eslint"
-    },
-    "rules": {}
+    }
+  },
+  "eslintIgnore": [
+    "tests"
+  ],
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue"
+    ],
+    "transform": {
+      "^.+\\.js$": "babel-jest",
+      "^.+\\.vue$": "vue-jest",
+      "^.+\\.svg$": "<rootDir>/tests/svgTransform.js"
+    }
   },
   "browserslist": [
     "> 1%",
