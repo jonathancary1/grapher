@@ -4,91 +4,65 @@
     @submit.prevent="submit"
   >
     <label
-      class="signup-label-layout"
-      for="email"
-    >
-      Email
-    </label>
-    <input
-      v-model="$v.email.$model"
-      class="signup-input-layout"
-      name="email"
-      type="email"
-    >
-    <template v-if="$v.email.$error">
-      <div
-        v-if="!$v.email.required"
-        class="validation-error signup-error-layout"
-      >
-        This field is required.
-      </div>
-      <div
-        v-if="!$v.email.email"
-        class="validation-error signup-error-layout"
-      >
-        Please enter a valid email.
-      </div>
-    </template>
-    <label
-      class="signup-label-layout"
+      class="login-label-layout"
       for="username"
     >
       Username
     </label>
     <input
       v-model="$v.username.$model"
-      class="signup-input-layout"
+      class="login-input-layout"
       name="username"
       type="text"
     >
     <template v-if="$v.username.$error">
       <div
         v-if="!$v.username.required"
-        class="validation-error signup-error-layout"
+        class="validation-error login-error-layout"
       >
         This field is required.
       </div>
       <div
         v-if="!$v.username.alphaNum"
-        class="validation-error signup-error-layout"
+        class="validation-error login-error-layout"
       >
         Please enter a valid username.
       </div>
     </template>
     <label
-      class="signup-label-layout"
+      class="login-label-layout"
       for="password"
     >
       Password
     </label>
     <input
       v-model="$v.password.$model"
-      class="signup-input-layout"
+      class="login-input-layout"
       name="password"
       type="password"
     >
     <template v-if="$v.password.$error">
       <div
         v-if="!$v.password.required"
-        class="validation-error signup-error-layout"
+        class="validation-error login-error-layout"
       >
         This field is required.
       </div>
       <div
         v-if="!$v.password.minLength"
-        class="validation-error signup-error-layout"
+        class="validation-error login-error-layout"
       >
         At least 8 characters are required.
       </div>
     </template>
     <input
-      class="signup-submit-layout"
+      class="login-submit-layout"
       type="submit"
-      value="Sign Up"
+      value="Log In"
     >
     <div
       v-if="error !== null"
-      class="submition-error signup-error-layout"
+      class="submition-error login-error-layout"
     >
       {{ error.message }}
     </div>
@@ -96,20 +70,21 @@
 </template>
 
 <script>
-import {
-  alphaNum, email, minLength, required,
-} from 'vuelidate/lib/validators';
+import { validationMixin } from 'vuelidate';
+import * as validators from 'vuelidate/lib/validators';
 
 export default {
-  name: 'Signup',
+  name: 'Login',
   data() {
     return {
-      email: '',
       username: '',
       password: '',
       error: null,
     };
   },
+  mixins: [
+    validationMixin,
+  ],
   methods: {
     async submit() {
       this.$data.error = null;
@@ -118,9 +93,8 @@ export default {
         return;
       }
       try {
-        // eslint-disable-next-line no-shadow
-        const { email, username, password } = this.$data;
-        await this.$store.dispatch('signUp', { email, username, password });
+        const { username, password } = this.$data;
+        await this.$store.dispatch('logIn', { username, password });
         this.$emit('submit');
       } catch (error) {
         this.$data.error = error;
@@ -131,39 +105,35 @@ export default {
     },
   },
   validations: {
-    email: {
-      required,
-      email,
-    },
     username: {
-      required,
-      alphaNum,
+      required: validators.required,
+      alphaNum: validators.alphaNum,
     },
     password: {
-      required,
-      minLength: minLength(8),
+      required: validators.required,
+      minLength: validators.minLength(8),
     },
   },
 };
 </script>
 
 <style>
-.signup-label-layout {
+.login-label-layout {
   width: 256px;
   margin: 16px 0 4px 0;
 }
 
-.signup-input-layout {
+.login-input-layout {
   width: 256px;
   margin: 0 0 4px 0;
 }
 
-.signup-error-layout {
+.login-error-layout {
   width: 256px;
   margin: 4px 0 0 0;
 }
 
-.signup-submit-layout {
+.login-submit-layout {
   width: 128px;
   margin: 32px 0 8px 0;
 }

@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-const queries = {
+export const queries = {
   crawl: gql`
     query crawl ($id: String!) {
       user {
@@ -25,7 +25,7 @@ const queries = {
   `,
 };
 
-const mutations = {
+export const mutations = {
   crawl: gql`
     mutation crawl ($url: String!) {
       crawl(url: $url) {
@@ -34,5 +34,3 @@ const mutations = {
     }
   `,
 };
-
-export default { queries, mutations };

@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import SearchIcon from '../assets/search.svg';
+import SearchIcon from '../../assets/search.svg';
 
 export default {
   name: 'Search',

@@ -1,9 +1,9 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import clone from 'clone';
-import options from '../src/store/options';
-import Account from '../src/views/Account.vue';
-import Search from '../src/views/Search.vue';
+import * as options from '../src/store';
+import Account from '../src/views/account/Account.vue';
+import Search from '../src/views/account/Search.vue';
 
 describe('Account', () => {
   it('should disable the left button when leftmost', async () => {

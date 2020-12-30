@@ -1,14 +1,13 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import Vuelidate from 'vuelidate';
 import clone from 'clone';
 import flushPromises from 'flush-promises';
-import options from '../src/store/options';
-import Home from '../src/views/Home.vue';
-import Login from '../src/views/Login.vue';
-import Signup from '../src/views/Signup.vue';
+import * as options from '../src/store';
+import Home from '../src/views/home/Home.vue';
+import Login from '../src/views/home/Login.vue';
+import Signup from '../src/views/home/Signup.vue';
 
-jest.mock('../src/aws/cognito', () => ({
+jest.mock('../src/api/cognito', () => ({
   async logIn() {
     return { idToken: { jwtToken: '' } };
   },
@@ -21,7 +20,6 @@ describe('Home', () => {
   it('should switch to log in when button is clicked', async () => {
     const localVue = createLocalVue();
     localVue.use(Vuex);
-    localVue.use(Vuelidate);
     const store = new Vuex.Store(clone(options));
     const wrapper = mount(Home, { localVue, store });
     const button = wrapper.find('input[type="button"]');
@@ -35,7 +33,6 @@ describe('Home', () => {
   it('should switch to sign up when button is clicked', async () => {
     const localVue = createLocalVue();
     localVue.use(Vuex);
-    localVue.use(Vuelidate);
     const store = new Vuex.Store(clone(options));
     const wrapper = mount(Home, { localVue, store });
     const button = wrapper.find('input[type="button"]');
@@ -48,7 +45,6 @@ describe('Home', () => {
   it('should switch to log in on sign up success', async () => {
     const localVue = createLocalVue();
     localVue.use(Vuex);
-    localVue.use(Vuelidate);
     const store = new Vuex.Store(clone(options));
     const wrapper = mount(Home, { localVue, store });
     // navigate to sign up
@@ -70,7 +66,6 @@ describe('Home', () => {
   it('should route to account on log in success ', async () => {
     const localVue = createLocalVue();
     localVue.use(Vuex);
-    localVue.use(Vuelidate);
     const store = new Vuex.Store(clone(options));
     const push = jest.fn();
     const mocks = { $router: { push } };

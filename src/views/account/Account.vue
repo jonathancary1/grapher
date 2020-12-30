@@ -32,8 +32,8 @@
 <script>
 import D3Network from 'vue-d3-network';
 import Navigation from './Navigation.vue';
-import LoadingIcon from '../assets/loading.svg';
-import graphql from '../apollo/graphql';
+import LoadingIcon from '../../assets/loading.svg';
+import { queries, mutations } from '../../api/graphql';
 
 function normalize(url) {
   return new RegExp('^https?://').test(url) ? url : `https://${url}`;
@@ -90,7 +90,7 @@ export default {
   },
   apollo: {
     crawl: {
-      query: graphql.queries.crawl,
+      query: queries.crawl,
       context() {
         return { headers: { authorization: this.$store.state.token } };
       },
@@ -105,7 +105,7 @@ export default {
       },
     },
     crawls: {
-      query: graphql.queries.crawls,
+      query: queries.crawls,
       context() {
         return { headers: { authorization: this.$store.state.token } };
       },
@@ -131,7 +131,7 @@ export default {
       }
       this.$data.loading = true;
       const mutation = await this.$apollo.mutate({
-        mutation: graphql.mutations.crawl,
+        mutation: mutations.crawl,
         context: { headers: { authorization: this.$store.state.token } },
         variables: { url: normalize(this.$data.url) },
       });

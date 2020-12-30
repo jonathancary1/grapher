@@ -27,8 +27,8 @@
 
 <script>
 import Search from './Search.vue';
-import LeftArrow from '../assets/left.svg';
-import RightArrow from '../assets/right.svg';
+import LeftArrow from '../../assets/left.svg';
+import RightArrow from '../../assets/right.svg';
 
 export default {
   name: 'Navigation',
