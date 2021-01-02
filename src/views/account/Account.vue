@@ -55,7 +55,7 @@ export default {
     };
   },
   created() {
-    if (this.$store.state.token == null) {
+    if (this.$store.getters.getToken === null) {
       this.$router.replace({ name: 'Home' });
     }
   },
@@ -75,15 +75,15 @@ export default {
   },
   computed: {
     nodes() {
-      return this.$data.crawl.pages.map((page) => ({ _color: '#222', id: page.id, name: page.url }));
+      return this.crawl.pages.map((page) => ({ _color: '#222', id: page.id, name: page.url }));
     },
     links() {
-      return this.$data.crawl.pages.flatMap((page) => page.links.map((link) => ({ _color: '#222', sid: page.id, tid: link })));
+      return this.crawl.pages.flatMap((page) => page.links.map((link) => ({ _color: '#222', sid: page.id, tid: link })));
     },
     disabled() {
       return {
-        left: this.$data.index === null || this.$data.index === 0,
-        right: this.$data.index === null || this.$data.index === this.$data.crawls.length - 1,
+        left: this.index === null || this.index === 0,
+        right: this.index === null || this.index === this.crawls.length - 1,
       };
     },
   },
@@ -91,13 +91,13 @@ export default {
     crawl: {
       query: queries.crawl,
       context() {
-        return { headers: { authorization: this.$store.state.token } };
+        return { headers: { authorization: this.$store.getters.getToken } };
       },
       variables() {
-        return { id: this.$data.crawls[this.$data.index] };
+        return { id: this.crawls[this.index] };
       },
       skip() {
-        return this.$data.index === null;
+        return this.index === null;
       },
       update(data) {
         return data.user?.crawl || { pages: [] };
@@ -106,7 +106,7 @@ export default {
     crawls: {
       query: queries.crawls,
       context() {
-        return { headers: { authorization: this.$store.state.token } };
+        return { headers: { authorization: this.$store.getters.getToken } };
       },
       update(data) {
         return data.user?.crawls?.map((crawl) => crawl.id) || [];
@@ -115,31 +115,32 @@ export default {
   },
   methods: {
     left() {
-      if (this.$data.index !== null && this.$data.index > 0) {
-        this.$data.index -= 1;
+      if (this.index !== null && this.index > 0) {
+        this.index -= 1;
       }
     },
     right() {
-      if (this.$data.index !== null && this.$data.index < this.$data.crawls.length - 1) {
-        this.$data.index += 1;
+      if (this.index !== null && this.index < this.crawls.length - 1) {
+        this.index += 1;
       }
     },
     async search() {
-      if (this.$data.loading) {
+      if (this.loading) {
         return;
       }
-      this.$data.loading = true;
+      this.loading = true;
       const mutation = await this.$apollo.mutate({
         mutation: mutations.crawl,
-        context: { headers: { authorization: this.$store.state.token } },
-        variables: { url: normalize(this.$data.url) },
+        context: { headers: { authorization: this.$store.getters.getToken } },
+        variables: { url: normalize(this.url) },
       });
       if (mutation.data.crawl === null) {
-        this.$data.url = '';
-        this.$data.loading = false;
+        this.url = '';
+        this.loading = false;
+        return;
       }
-      this.$data.crawls.push(mutation.data.crawl.id);
-      this.$data.index = this.$data.crawls.length - 1;
+      this.crawls.push(mutation.data.crawl.id);
+      this.index = this.crawls.length - 1;
     },
   },
 };

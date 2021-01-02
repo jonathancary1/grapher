@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     value() {
-      switch (this.$data.state) {
+      switch (this.state) {
         case 'LOGIN':
           return 'Sign Up';
         case 'SIGNUP':
@@ -50,18 +50,18 @@ export default {
       this.$router.push({ name: 'Account' });
     },
     signup() {
-      this.$data.state = 'LOGIN';
-      this.$data.message = true;
+      this.state = 'LOGIN';
+      this.message = true;
     },
     button() {
-      switch (this.$data.state) {
+      switch (this.state) {
         case 'LOGIN':
-          this.$data.state = 'SIGNUP';
-          this.$data.message = false;
+          this.state = 'SIGNUP';
+          this.message = false;
           break;
         case 'SIGNUP':
-          this.$data.state = 'LOGIN';
-          this.$data.message = false;
+          this.state = 'LOGIN';
+          this.message = false;
           break;
         default:
           break;
@@ -98,7 +98,7 @@ export default {
 }
 
 .message {
-  margin: 16px 0 0 0;
+  margin: 0 0 32px 0;
 }
 
 .hr {

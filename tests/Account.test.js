@@ -51,7 +51,7 @@ describe('Account', () => {
     wrapper.setData({ crawls: [1, 2], index: 0 });
     await wrapper.findComponent(Search).trigger('submit');
     expect(mutate).toHaveBeenCalled();
-    expect(wrapper.vm.$data.index).toBe(2);
-    expect(wrapper.vm.$data.crawls).toStrictEqual([1, 2, 3]);
+    expect(wrapper.vm.index).toBe(2);
+    expect(wrapper.vm.crawls).toStrictEqual([1, 2, 3]);
   });
 });

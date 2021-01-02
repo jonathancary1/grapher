@@ -4,6 +4,13 @@ export const state = {
   token: null,
 };
 
+export const getters = {
+  // eslint-disable-next-line no-shadow
+  getToken(state) {
+    return state.token;
+  },
+};
+
 export const mutations = {
   // eslint-disable-next-line no-shadow
   setToken(state, { token }) {

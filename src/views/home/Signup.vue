@@ -86,19 +86,22 @@ export default {
       return '';
     },
     async submit() {
-      this.$data.error = null;
+      this.error = null;
       this.$v.$touch();
       if (this.$v.$invalid) {
         return;
       }
       try {
-        const { email, username, password } = this.$data;
-        await this.$store.dispatch('signUp', { email, username, password });
+        await this.$store.dispatch('signUp', {
+          email: this.email,
+          username: this.username,
+          password: this.password,
+        });
         this.$emit('submit');
       } catch (error) {
-        this.$data.error = error;
+        this.error = error;
       } finally {
-        this.$data.password = '';
+        this.password = '';
         this.$v.password.$reset();
       }
     },

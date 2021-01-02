@@ -6,12 +6,15 @@ import ApolloClient from 'apollo-boost';
 import 'normalize.css';
 import App from './App.vue';
 import { home, account } from './routes';
-import { state, mutations, actions } from './store';
+import {
+  state, getters, mutations, actions,
+} from './store';
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state,
+  getters,
   mutations,
   actions,
 });
