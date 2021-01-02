@@ -1,31 +1,30 @@
 <template>
-  <div class="column">
-    <header class="title account-header-layout">
-      Grapher
+  <div id="account">
+    <header class="header">
+      <div class="title">
+        Grapher
+      </div>
     </header>
-    <Navigation
-      class="account-navigation-layout"
-      v-model="url"
-      :disabled="disabled"
-      @left="left"
-      @right="right"
-      @search="search"
-    />
-    <div
-      v-if="loading"
-      class="container account-loading-layout"
-    >
-      <LoadingIcon
-        class="account-loading-icon"
+    <div class="content">
+      <Navigation
+        class="navigation"
+        v-model="url"
+        :disabled="disabled"
+        @left="left"
+        @right="right"
+        @search="search"
+      />
+      <div v-if="loading" class="container loading">
+        <LoadingIcon class="icon"/>
+      </div>
+      <d3-network
+        v-else
+        class="graph"
+        :net-nodes="nodes"
+        :net-links="links"
+        :options="{ force: 1000, linkWidth: 1, nodeSize: 8, nodeLabels: true }"
       />
     </div>
-    <d3-network
-      v-else
-      class="account-graph-layout"
-      :net-nodes="nodes"
-      :net-links="links"
-      :options="{ force: 1000, linkWidth: 1, nodeSize: 8, nodeLabels: true }"
-    />
   </div>
 </template>
 
@@ -76,10 +75,10 @@ export default {
   },
   computed: {
     nodes() {
-      return this.$data.crawl.pages.map((page) => ({ _color: '#444', id: page.id, name: page.url }));
+      return this.$data.crawl.pages.map((page) => ({ _color: '#222', id: page.id, name: page.url }));
     },
     links() {
-      return this.$data.crawl.pages.flatMap((page) => page.links.map((link) => ({ _color: '#444', sid: page.id, tid: link })));
+      return this.$data.crawl.pages.flatMap((page) => page.links.map((link) => ({ _color: '#222', sid: page.id, tid: link })));
     },
     disabled() {
       return {
@@ -146,58 +145,60 @@ export default {
 };
 </script>
 
-<style>
-.account-header-layout {
-  margin: 64px 0 64px 0;
+<style lang="scss" scoped>
+#account {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 128px 1fr;
 }
 
-.account-navigation-layout {
-  max-width: 480px;
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.content {
+  margin: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.navigation {
+  min-width: 300px;
+  max-width: 600px;
   width: 80vw;
   margin: 0 0 16px 0;
-  justify-content: space-between;
 }
 
-.account-graph-layout {
+.graph, .loading {
   overflow: hidden;
-  max-width: 480px;
-  max-height: 384px;
+  min-width: 300px;
+  max-width: 600px;
+  min-height: 240px;
+  max-height: 480px;
   width: 80vw;
   height: 64vw;
-  margin: 0 0 16px 0;
   border-radius: 20px;
   box-shadow: inset 0 0 16px #ddd;
 }
 
-.account-loading-layout {
-  max-width: 480px;
-  max-height: 384px;
-  width: 80vw;
-  height: 64vw;
-  margin: 0 0 16px 0;
-  border-radius: 20px;
-  box-shadow: inset 0 0 16px #ddd;
-}
-
-.account-loading-layout svg {
+.loading svg {
   width: 32px;
   height: 32px;
 }
 
-@-webkit-keyframes rotating {
-  from {
-    -webkit-transform: rotate(0deg);
-  }
-  to {
-    -webkit-transform: rotate(-360deg);
-  }
+@keyframes rotating {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
 }
 
-.account-loading-icon {
-  -webkit-animation: rotating 2s linear infinite;
-}
-
-.account-loading-icon path {
-  fill: #ddd;
+.icon {
+  animation: rotating 2s linear infinite;
+  & path { fill: #ddd; }
 }
 </style>

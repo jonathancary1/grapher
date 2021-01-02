@@ -1,15 +1,10 @@
 <template>
-  <form
-    class="row search-form"
-    @submit.prevent="$emit('search')"
-  >
-    <button
-      class="search-button"
-    >
-      <SearchIcon class="search-icon" />
+  <form id="search" class="row" @submit.prevent="$emit('search')">
+    <button class="container button">
+      <SearchIcon class="icon"/>
     </button>
     <input
-      class="search-input"
+      class="input"
       type="text"
       placeholder="e.g. google.com"
       :value="url"
@@ -28,38 +23,43 @@ export default {
 };
 </script>
 
-<style>
-.search-form {
+<style lang="scss" scoped>
+@import '../../variables.scss';
+
+#search {
   height: 40px;
   border-radius: 20px;
-  box-shadow: 0 0 8px #ddd;
+  box-shadow: 0 0 8px $accent;
 }
 
-.search-button {
-  height: 100%;
-  fill: #444;
+.button {
+  box-sizing: border-box;
+  height: 40px;
+  fill: $primary;
   background: #fff;
   border: none;
   border-radius: 20px 0 0 20px;
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  &:hover {
+    fill: $action;
+  }
 }
 
-.search-button:hover {
-  fill: #f75;
-}
-
-.search-icon {
+.icon {
   padding: 2px 8px 0 8px;
   width: 16px;
   height: 16px;
 }
 
-.search-input {
+.input {
   margin: 2px 12px 2px 0;
   width: 100%;
   border: none;
-}
-
-.search-input:focus {
-  outline: none;
+  &:focus {
+    outline: none;
+  }
 }
 </style>

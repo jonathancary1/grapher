@@ -1,69 +1,31 @@
 <template>
-  <form
-    class="column"
-    @submit.prevent="submit"
-  >
-    <label
-      class="login-label-layout"
-      for="username"
-    >
+  <form id="login" @submit.prevent="submit">
+    <label class="label" for="username">
       Username
     </label>
     <input
-      v-model="$v.username.$model"
-      class="login-input-layout"
+      class="field"
       name="username"
       type="text"
+      v-model="$v.username.$model"
     >
-    <template v-if="$v.username.$error">
-      <div
-        v-if="!$v.username.required"
-        class="validation-error login-error-layout"
-      >
-        This field is required.
-      </div>
-      <div
-        v-if="!$v.username.alphaNum"
-        class="validation-error login-error-layout"
-      >
-        Please enter a valid username.
-      </div>
-    </template>
-    <label
-      class="login-label-layout"
-      for="password"
-    >
+    <div class="error">
+      {{ message('username') }}
+    </div>
+    <label class="label" for="password">
       Password
     </label>
     <input
-      v-model="$v.password.$model"
-      class="login-input-layout"
+      class="field"
       name="password"
       type="password"
+      v-model="$v.password.$model"
     >
-    <template v-if="$v.password.$error">
-      <div
-        v-if="!$v.password.required"
-        class="validation-error login-error-layout"
-      >
-        This field is required.
-      </div>
-      <div
-        v-if="!$v.password.minLength"
-        class="validation-error login-error-layout"
-      >
-        At least 8 characters are required.
-      </div>
-    </template>
-    <input
-      class="login-submit-layout"
-      type="submit"
-      value="Log In"
-    >
-    <div
-      v-if="error !== null"
-      class="submition-error login-error-layout"
-    >
+    <div class="error">
+      {{ message('password') }}
+    </div>
+    <input class="button" type="submit" value="Log In">
+    <div v-if="error !== null" class="message">
       {{ error.message }}
     </div>
   </form>
@@ -86,6 +48,26 @@ export default {
     validationMixin,
   ],
   methods: {
+    message(field) {
+      const messages = {
+        username: {
+          required: 'This field is required.',
+          alphaNum: 'Please enter a valid username.',
+        },
+        password: {
+          required: 'This field is required.',
+          minLength: 'At least 8 characters are required.',
+        },
+      };
+      if (this.$v[field].$error) {
+        for (const key of Object.keys(this.$v[field].$params)) {
+          if (this.$v[field][key] === false) {
+            return messages[field][key];
+          }
+        }
+      }
+      return '';
+    },
     async submit() {
       this.$data.error = null;
       this.$v.$touch();
@@ -117,24 +99,35 @@ export default {
 };
 </script>
 
-<style>
-.login-label-layout {
-  width: 256px;
-  margin: 16px 0 4px 0;
+<style lang="scss" scoped>
+#login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
 
-.login-input-layout {
+.label {
   width: 256px;
   margin: 0 0 4px 0;
 }
 
-.login-error-layout {
-  width: 256px;
-  margin: 4px 0 0 0;
+.field {
+  width: 262px;
+  margin: 0 0 4px 0;
 }
 
-.login-submit-layout {
+.error {
+  width: 256px;
+  margin: 0 0 16px 0;
+}
+
+.button {
   width: 128px;
-  margin: 32px 0 8px 0;
+  margin: 22px 0 0 0;
+}
+
+.message {
+  margin: 56px 0 0 0;
 }
 </style>

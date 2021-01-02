@@ -1,95 +1,43 @@
 <template>
-  <form
-    class="column"
-    @submit.prevent="submit"
-  >
-    <label
-      class="signup-label-layout"
-      for="email"
-    >
+  <form id="signup" @submit.prevent="submit">
+    <label class="label" for="email">
       Email
     </label>
     <input
-      v-model="$v.email.$model"
-      class="signup-input-layout"
+      class="field"
       name="email"
       type="email"
+      v-model="$v.email.$model"
     >
-    <template v-if="$v.email.$error">
-      <div
-        v-if="!$v.email.required"
-        class="validation-error signup-error-layout"
-      >
-        This field is required.
-      </div>
-      <div
-        v-if="!$v.email.email"
-        class="validation-error signup-error-layout"
-      >
-        Please enter a valid email.
-      </div>
-    </template>
-    <label
-      class="signup-label-layout"
-      for="username"
-    >
+    <div class="error">
+      {{ message('email') }}
+    </div>
+    <label class="label" for="username">
       Username
     </label>
     <input
-      v-model="$v.username.$model"
-      class="signup-input-layout"
+      class="field"
       name="username"
       type="text"
+      v-model="$v.username.$model"
     >
-    <template v-if="$v.username.$error">
-      <div
-        v-if="!$v.username.required"
-        class="validation-error signup-error-layout"
-      >
-        This field is required.
-      </div>
-      <div
-        v-if="!$v.username.alphaNum"
-        class="validation-error signup-error-layout"
-      >
-        Please enter a valid username.
-      </div>
-    </template>
-    <label
-      class="signup-label-layout"
-      for="password"
-    >
+    <div class="error">
+      {{ message('username') }}
+    </div>
+    <label class="label" for="password">
       Password
     </label>
     <input
-      v-model="$v.password.$model"
-      class="signup-input-layout"
+      class="field"
       name="password"
       type="password"
+      v-model="$v.password.$model"
     >
-    <template v-if="$v.password.$error">
-      <div
-        v-if="!$v.password.required"
-        class="validation-error signup-error-layout"
-      >
-        This field is required.
-      </div>
-      <div
-        v-if="!$v.password.minLength"
-        class="validation-error signup-error-layout"
-      >
-        At least 8 characters are required.
-      </div>
-    </template>
-    <input
-      class="signup-submit-layout"
-      type="submit"
-      value="Sign Up"
-    >
-    <div
-      v-if="error !== null"
-      class="submition-error signup-error-layout"
-    >
+    <div class="error">
+      {{ message('password') }}
+    </div>
+    <input class="button" type="submit" value="Sign Up">
+    <div v-if="error !== null" class="message">
       {{ error.message }}
     </div>
   </form>
@@ -113,6 +61,30 @@ export default {
     validationMixin,
   ],
   methods: {
+    message(field) {
+      const messages = {
+        email: {
+          required: 'This field is required.',
+          email: 'Please enter a valid email.',
+        },
+        username: {
+          required: 'This field is required.',
+          alphaNum: 'Please enter a valid username.',
+        },
+        password: {
+          required: 'This field is required.',
+          minLength: 'At least 8 characters are required.',
+        },
+      };
+      if (this.$v[field].$error) {
+        for (const key of Object.keys(this.$v[field].$params)) {
+          if (this.$v[field][key] === false) {
+            return messages[field][key];
+          }
+        }
+      }
+      return '';
+    },
     async submit() {
       this.$data.error = null;
       this.$v.$touch();
@@ -148,24 +120,35 @@ export default {
 };
 </script>
 
-<style>
-.signup-label-layout {
-  width: 256px;
-  margin: 16px 0 4px 0;
+<style lang="scss" scoped>
+#signup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
 
-.signup-input-layout {
+.label {
   width: 256px;
   margin: 0 0 4px 0;
 }
 
-.signup-error-layout {
-  width: 256px;
-  margin: 4px 0 0 0;
+.field {
+  width: 262px;
+  margin: 0 0 4px 0;
 }
 
-.signup-submit-layout {
+.error {
+  width: 256px;
+  margin: 0 0 16px 0;
+}
+
+.button {
   width: 128px;
-  margin: 32px 0 8px 0;
+  margin: 22px 0 0 0;
+}
+
+.message {
+  margin: 56px 0 0 0;
 }
 </style>

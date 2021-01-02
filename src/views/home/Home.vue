@@ -1,31 +1,19 @@
 <template>
-  <div class="column">
-    <header class="title home-header-layout">
-      Grapher
+  <div id="home">
+    <header class="header">
+      <div class="title">
+        Grapher
+      </div>
     </header>
-    <Login
-      v-if="state === 'LOGIN'"
-      @submit="login"
-    />
-    <Signup
-      v-if="state === 'SIGNUP'"
-      @submit="signup"
-    />
-    <div
-      v-if="verification"
-      class="home-verification-layout"
-    >
-      A verification email has been sent.
-    </div>
-    <hr
-      class="home-hr-layout"
-    >
-    <input
-      class="home-button-layout"
-      type="button"
-      :value="value"
-      @click="button"
-    >
+    <Login v-if="state === 'LOGIN'" class="form" @submit="login"/>
+    <Signup v-if="state === 'SIGNUP'" class="form" @submit="signup"/>
+    <footer class="footer">
+      <div v-if="message" class="message">
+        A verification email has been sent.
+      </div>
+      <hr class="hr">
+      <input class="button" type="button" :value="value" @click="button"/>
+    </footer>
   </div>
 </template>
 
@@ -42,7 +30,7 @@ export default {
   data() {
     return {
       state: 'LOGIN',
-      verification: false,
+      message: false,
     };
   },
   computed: {
@@ -63,17 +51,17 @@ export default {
     },
     signup() {
       this.$data.state = 'LOGIN';
-      this.$data.verification = true;
+      this.$data.message = true;
     },
     button() {
       switch (this.$data.state) {
         case 'LOGIN':
           this.$data.state = 'SIGNUP';
-          this.$data.verification = false;
+          this.$data.message = false;
           break;
         case 'SIGNUP':
           this.$data.state = 'LOGIN';
-          this.$data.verification = false;
+          this.$data.message = false;
           break;
         default:
           break;
@@ -83,22 +71,42 @@ export default {
 };
 </script>
 
-<style>
-.home-header-layout {
-  margin: 128px 0 64px 0;
+<style lang="scss" scoped>
+#home {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 128px 1fr 128px;
 }
 
-.home-verification-layout {
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.form {
+  padding: 32px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.message {
   margin: 16px 0 0 0;
 }
 
-.home-hr-layout {
+.hr {
   width: 196px;
-  margin: 64px 0 16px 0;
+  margin: 0 0 32px 0;
 }
 
-.home-button-layout {
+.button {
   width: 128px;
-  margin: 0 0 16px 0;
 }
 </style>

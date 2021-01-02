@@ -37,6 +37,8 @@
     "eslint-plugin-vue": "^6.2.2",
     "flush-promises": "^1.0.2",
     "jest": "^26.6.3",
+    "sass": "^1.32.0",
+    "sass-loader": "^10.1.0",
     "vue-jest": "^3.0.7",
     "vue-template-compiler": "^2.6.12"
   },
@@ -53,7 +55,18 @@
       "parser": "babel-eslint"
     },
     "rules": {
-      "no-param-reassign": ["error", { "props": false }]
+      "no-param-reassign": [
+        "error",
+        {
+          "props": false
+        }
+      ],
+      "no-restricted-syntax": [
+        "error",
+        "ForInStatement",
+        "LabeledStatement",
+        "WithStatement"
+      ]
     }
   },
   "eslintIgnore": [

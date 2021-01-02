@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+@import './variables.scss';
+
+.title {
+  color: $primary;
+  font: 32px 'Lato', sans-serif;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.error {
+  color: #f00;
+  height: 14px;
+  font-size: 14px;
+  text-align: right;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+hr {
+  border: none;
+  border-top: solid 1px $accent;
+}
+
+input {
+  box-sizing: border-box;
+  height: 28px;
+}
+
+input[type=button], input[type=submit] {
+  font: 16px 'Lato', sans-serif;
+  border-radius: 0;
+  text-align: center;
+  text-transform: uppercase;
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+input[type=button] {
+  color: $primary;
+  background: #fff;
+  border: 2px solid $primary;
+  &:hover {
+    color: $action;
+    border: 2px solid $action;
+  }
+}
+
+input[type=submit] {
+  color: #fff;
+  background: $primary;
+  border: 2px solid $primary;
+  &:hover {
+    background: $action;
+    border: 2px solid $action;
+  }
+}

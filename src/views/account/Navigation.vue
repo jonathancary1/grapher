@@ -1,23 +1,21 @@
 <template>
   <div class="row">
     <button
-      id="navigation-button-left"
-      class="container navigation-button"
+      class="container button left"
       :disabled="disabled.left"
       @click="$emit('left')"
     >
-      <LeftArrow class="navigation-arrow" />
+      <LeftArrow class="arrow"/>
     </button>
     <button
-      id="navigation-button-right"
-      class="container navigation-button"
+      class="container button right"
       :disabled="disabled.right"
       @click="$emit('right')"
     >
-      <RightArrow class="navigation-arrow" />
+      <RightArrow class="arrow"/>
     </button>
     <Search
-      class="navigation-search-layout"
+      class="search"
       :url="url"
       @input="$emit('input', $event)"
       @search="$emit('search')"
@@ -48,47 +46,48 @@ export default {
 };
 </script>
 
-<style>
-.navigation-arrow {
-  width: 12px;
-  height: 16px;
-  stroke: #fff;
-}
+<style lang="scss" scoped>
+@import '../../variables.scss';
 
-.navigation-button {
+.button {
   flex: none;
-  background: #444;
+  background: $primary;
   width: 32px;
   height: 32px;
   margin: 0;
   padding: 0;
   border: none;
   border-radius: 16px;
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  &:hover {
+    background: $action;
+  }
+  &:disabled, &:disabled:hover {
+    background: $accent;
+  }
 }
 
-.navigation-button:hover {
-  background: #f75;
+.arrow {
+  width: 12px;
+  height: 16px;
+  fill: #fff;
+  stroke: #fff;
 }
 
-.navigation-button:disabled {
-  background: #ddd;
-}
-
-.navigation-button:disabled:hover {
-  background: #ddd;
-}
-
-.navigation-search-layout {
-  width: 100%;
-}
-
-#navigation-button-left {
+.left {
   margin: 0 8px 0 0;
   padding: 0 2px 0 0;
 }
 
-#navigation-button-right {
+.right {
   margin: 0 16px 0 0;
   padding: 0 0 0 2px;
+}
+
+.search {
+  width: 100%;
 }
 </style>

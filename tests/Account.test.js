@@ -12,7 +12,7 @@ describe('Account', () => {
     const store = new Vuex.Store(clone(options));
     store.commit('setToken', { token: '' });
     const wrapper = mount(Account, { localVue, store });
-    const button = wrapper.find('#navigation-button-left');
+    const button = wrapper.find('.left');
     await wrapper.setData({ crawls: [], index: null });
     expect(button.element.disabled).toBe(true);
     await wrapper.setData({ crawls: [0], index: 0 });
@@ -29,7 +29,7 @@ describe('Account', () => {
     const store = new Vuex.Store(clone(options));
     store.commit('setToken', { token: '' });
     const wrapper = mount(Account, { localVue, store });
-    const button = wrapper.find('#navigation-button-right');
+    const button = wrapper.find('.right');
     await wrapper.setData({ crawls: [], index: null });
     expect(button.element.disabled).toBe(true);
     await wrapper.setData({ crawls: [0], index: 0 });
