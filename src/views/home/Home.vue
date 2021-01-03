@@ -8,11 +8,11 @@
     <Login v-if="state === 'LOGIN'" class="form" @submit="login"/>
     <Signup v-if="state === 'SIGNUP'" class="form" @submit="signup"/>
     <footer class="footer">
-      <div v-if="message" class="message">
-        A verification email has been sent.
-      </div>
       <hr class="hr">
       <input class="button" type="button" :value="value" @click="button"/>
+      <div v-if="message">
+        A verification email has been sent.
+      </div>
     </footer>
   </div>
 </template>
@@ -97,10 +97,6 @@ export default {
   justify-content: flex-start;
 }
 
-.message {
-  margin: 0 0 32px 0;
-}
-
 .hr {
   width: 196px;
   margin: 0 0 32px 0;
@@ -108,5 +104,6 @@ export default {
 
 .button {
   width: 128px;
+  margin: 0 0 32px 0;
 }
 </style>
